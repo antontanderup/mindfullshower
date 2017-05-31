@@ -230,3 +230,11 @@ body {
   position:absolute;
   z-index: 100;
 }
+
+.time-output {
+    position: absolute;
+    left: .9rem;
+    top: 6rem;
+    color: white;
+    font-size: 2rem;
+}

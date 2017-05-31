@@ -12,7 +12,7 @@ var updateTimeline = function () {
 }
 
 var updateTime = function () {
-  $("#time-output").html(chakraSelection.time);
+  $("#time-output").html(chakraSelection.time + " min.");
       //<input id="time-line-range" name="time-line-range" type ="range" min="-2.5" max="3.0" step ="0.1"/>
 }
 
