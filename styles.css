@@ -1,0 +1,232 @@
+html {
+  font-size: 55%;
+}
+
+body {
+  background: rgb(234,140,0);
+  font-family: "Proxima Nova", sans-serif;
+}
+
+.chakra-selector {
+  background-image:url("/mindfullSelector/bodyline.svg");
+  background-repeat: no-repeat;
+  background-position: center 2.7rem;
+  background-size: 19.5rem;
+  width:70rem;
+  height:77rem;
+  position:relative;
+  margin:auto;
+  margin-bottom:3rem;
+}
+
+.chakra-selector ul {
+  list-style: none;
+  padding: 0;
+  overflow: hidden;
+  margin:auto;
+
+}
+
+/* .chakra-selector ul li a {
+  background-color: rgba(255,255,255,.3);
+  width: 100%;
+  display: block;
+  padding: 1rem 0rem;
+  text-align: center;
+  text-decoration: none;
+  color: rgb(255,255,255);
+
+} */
+
+.button {
+  display:block;
+  padding: 2rem 0rem;
+  text-align: center;
+  text-decoration: none;
+  background-color: rgba(255,255,255,.3);
+  color: rgb(255,255,255);
+  width:20rem;
+  font-size: 1.6rem;
+  border-radius:.3rem;
+  margin:auto;
+}
+
+.chakra {
+  text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+.chakra.selected {
+  text-shadow:0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.chakra:before, .chakra:after {
+  text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+.chakra.selected:before, .chakra.selected:after {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.chakra {
+  text-decoration: none;
+  color: rgb(255,255,255);
+  display: block;
+  position:absolute;
+  font-size: 1.6rem;
+  line-height:2.6rem;
+}
+
+.chakra::before {
+  content:"";
+  display:inline-block;
+  width:4rem;
+  height:4rem;
+  border-radius:50%;
+  position:absolute;
+  top:-.5rem;
+}
+
+.chakra::after {
+  content:"";
+  display:inline-block;
+  background-color:white;
+  height:.2rem;
+  width:4rem;
+  border-radius: .3rem;
+  position:absolute;
+  top:1.4rem;
+}
+
+
+.chakra-7::before { background-color:#b084b1;}
+.chakra-7 { top:2.8rem; }
+
+.chakra-6::before { background-color:#137ac1;}
+.chakra-6 { top:8.8rem; }
+
+.chakra-5::before { background-color:#2ec3e6;}
+.chakra-5 { top:14.8rem; }
+
+.chakra-4::before { background-color:#7cc030;}
+.chakra-4 { top:20.8rem; }
+
+.chakra-3::before { background-color:#fdd950;}
+.chakra-3 { top:26.8rem; }
+
+.chakra-2::before { background-color:#f97d2a;}
+.chakra-2 { top:32.8rem; }
+
+.chakra-1::before { background-color:#f82b41;}
+.chakra-1 { top:38.8rem; }
+
+
+.chakra-selector ul li:nth-child(odd) .chakra { left:53rem; }
+.chakra-selector ul li:nth-child(odd) .chakra::before { left:-20rem; }
+.chakra-selector ul li:nth-child(odd) .chakra::after { left:-6.5rem; }
+
+.chakra-selector ul li:nth-child(even) .chakra { left:4rem; width:15rem; }
+.chakra-selector ul li:nth-child(even) .chakra::before { left:29rem; }
+.chakra-selector ul li:nth-child(even) .chakra::after { left:15.5rem; }
+
+.time-selector {
+  width: 70rem;
+  height:7rem;
+  position:relative;
+  display:block;
+  margin: 1rem auto 3rem auto;
+}
+
+.time-icon {
+  height:7rem;
+  position:absolute;
+  left:0;
+}
+
+.time-line {
+  display:block;
+  position:relative;
+  width:60rem;
+}
+.time-line-line {
+  position:absolute;
+  width:60rem;
+  right:0;
+  top:3.5rem;
+  background-color:white;
+  height:.2rem;
+  display:inline-block;
+  z-index: 0;
+}
+
+.time-line-chakra {
+  position:relative;
+  display:block;
+  z-index:1;
+  float:left;
+  width:8rem;
+  height:6rem;
+  border-top-left-radius: 3rem;
+  border-bottom-left-radius: 3rem;
+  margin-top: .5rem;
+  background: linear-gradient(to right, red, blue, rgba(255, 0, 0, 0));
+  display:none;
+}
+
+.show {
+  display:block;
+}
+
+.time-line {
+  margin-left: 10rem;
+}
+
+.time-line-chakra-7 { background: linear-gradient(to right, #b084b1, #b084b1, rgba(255, 0, 0, 0));}
+.time-line-chakra-6 { background: linear-gradient(to right, #137ac1, #137ac1, rgba(255, 0, 0, 0));}
+.time-line-chakra-5 { background: linear-gradient(to right, #2ec3e6, #2ec3e6, rgba(255, 0, 0, 0));}
+.time-line-chakra-4 { background: linear-gradient(to right, #7cc030, #7cc030, rgba(255, 0, 0, 0));}
+.time-line-chakra-3 { background: linear-gradient(to right, #fdd950, #fdd950, rgba(255, 0, 0, 0));}
+.time-line-chakra-2 { background: linear-gradient(to right, #f97d2a, #f97d2a, rgba(255, 0, 0, 0));}
+.time-line-chakra-1 { background: linear-gradient(to right, #f82b41, #f82b41, rgba(255, 0, 0, 0));}
+
+
+/* Range slider reset */
+
+.time-selector input[type=range] {
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  width: 100%; /* Specific width is required for Firefox. */
+  background: transparent; /* Otherwise white in Chrome */
+}
+
+.time-selector input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+.time-selector input[type=range]:focus {
+  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+.time-selector input[type=range]::-ms-track {
+  cursor: pointer;
+  /* Hides the slider so custom styles can be added */
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+.time-selector input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+}
+
+.time-selector input[type=range] {
+  margin-top:3.8rem;
+  position:absolute;
+  z-index: 100;
+}

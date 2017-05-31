@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Select your meditation</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+  <div id="time-selector" class="time-selector">
+    <img class="time-icon" src="mindfullwatch.svg"/>
+    <div class="time-line-line"></div>
+    <input id="time-line-range" name="time-line-range" type ="range" min="-2.5" max="3.0" step ="0.1"/>
+    <p id="time-output"></p>
+    <div id="time-line" class="time-line">
+      <div class="time-line-chakra time-line-chakra-1"></div>
+      <div class="time-line-chakra time-line-chakra-2"></div>
+      <div class="time-line-chakra time-line-chakra-3"></div>
+      <div class="time-line-chakra time-line-chakra-4"></div>
+      <div class="time-line-chakra time-line-chakra-5"></div>
+      <div class="time-line-chakra time-line-chakra-6"></div>
+      <div class="time-line-chakra time-line-chakra-7"></div>
+    </div>
+  </div>
+  <div id="chakra-selector" class="chakra-selector">
+    <ul>
+      <li><a href="#" onClick="toggleChakra('chakra7');" class="chakra chakra-7">Oplysning, <br>balance og fred</a></li>
+      <li><a href="#" onClick="toggleChakra('chakra6');" class="chakra chakra-6">Fokuserering &amp; virkelighedsfornemmelse</a></li>
+      <li><a href="#" onClick="toggleChakra('chakra5');" class="chakra chakra-5">Kommunikation <br>og ærlighed</a></li>
+      <li><a href="#" onClick="toggleChakra('chakra4');" class="chakra chakra-4">Omsorg, glæde <br>og tilgivelse</a></li>
+      <li><a href="#" onClick="toggleChakra('chakra3');"  class="chakra chakra-3">Selvværd, styrke <br>og passion</a></li>
+      <li><a href="#" onClick="toggleChakra('chakra2');" class="chakra chakra-2">Seksualitet, følelser og  kreativitet</a></li>
+      <li><a href="#" onClick="toggleChakra('chakra1');" class="chakra chakra-1">Forbundethed <br>og tryghed</a></li>
+    </ul>
+  </div>
+  <a href="#" class="button">Shower</a>
+
+
+
+<script src="controller.js"></script>
+</body>
+</html>
