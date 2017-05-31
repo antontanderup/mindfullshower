@@ -1,3 +1,5 @@
+var rootFolder = "/mindfullSelector";
+
 var updateTimeline = function () {
   chakraSelection.time = 0;
   $("#time-line").empty();
@@ -8,9 +10,6 @@ var updateTimeline = function () {
   for (var key in chakraSelection.chakra) {
     if (chakraSelection.chakra[key]) {
       chakraSelection.time += 2;
-      //$(".time-line-chakra-" + key.substring(6,7)).addClass("show");
-    } else {
-      //$(".time-line-chakra-" + key.substring(6,7)).removeClass("show");
     }
   }
   console.log("Time: " + chakraSelection.time);
@@ -19,6 +18,20 @@ var updateTimeline = function () {
 var updateTime = function () {
   $("#time-output").html(chakraSelection.time + " min.");
       //<input id="time-line-range" name="time-line-range" type ="range" min="-2.5" max="3.0" step ="0.1"/>
+}
+
+var playShower = function() {
+  var audio = new Audio(rootFolder + '/audio/chakra_' + chakraSelection.playbackOrder[0] + '.wav');
+  audio.play();
+  for (i = 1; i < chakraSelection.playbackOrder.length; ++i) {
+    var delay = i * 120000;
+    var audioFile = rootFolder + '/audio/chakra_' + chakraSelection.playbackOrder[i] + '.wav';
+    setTimeout(function(audioFile){
+      var audio = new Audio(audioFile);
+      audio.play();
+    }, delay, audioFile);
+  }
+
 }
 
 
