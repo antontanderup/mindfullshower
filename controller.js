@@ -1,4 +1,4 @@
-var rootFolder = "/mindfullSelector";
+var rootFolder = document.location.pathname;
 
 var updateTimeline = function () {
   chakraSelection.time = 0;
@@ -21,11 +21,11 @@ var updateTime = function () {
 }
 
 var playShower = function() {
-  var audio = new Audio(rootFolder + '/audio/chakra_' + chakraSelection.playbackOrder[0] + '.wav');
+  var audio = new Audio(rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[0] + '.wav');
   audio.play();
   for (i = 1; i < chakraSelection.playbackOrder.length; ++i) {
     var delay = i * 120000;
-    var audioFile = rootFolder + '/audio/chakra_' + chakraSelection.playbackOrder[i] + '.wav';
+    var audioFile = rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[i] + '.wav';
     setTimeout(function(audioFile){
       var audio = new Audio(audioFile);
       audio.play();
