@@ -1,11 +1,16 @@
 var updateTimeline = function () {
   chakraSelection.time = 0;
+  $("#time-line").empty();
+  for (i = 0; i < chakraSelection.playbackOrder.length; ++i) {
+
+    $( "#time-line" ).append( '<div class="time-line-chakra time-line-chakra-' + chakraSelection.playbackOrder[i] +' show"></div>' );
+  }
   for (var key in chakraSelection.chakra) {
     if (chakraSelection.chakra[key]) {
       chakraSelection.time += 2;
-      $(".time-line-chakra-" + key.substring(6,7)).addClass("show");
+      //$(".time-line-chakra-" + key.substring(6,7)).addClass("show");
     } else {
-      $(".time-line-chakra-" + key.substring(6,7)).removeClass("show");
+      //$(".time-line-chakra-" + key.substring(6,7)).removeClass("show");
     }
   }
   console.log("Time: " + chakraSelection.time);
@@ -19,7 +24,14 @@ var updateTime = function () {
 
 
 var toggleChakra = function (chakraNo) {
-  var chakraNumber = chakraNo.substring(6,7);
+  var chakraNumber = parseInt(chakraNo.substring(6,7));
+  if ($.inArray( chakraNumber, chakraSelection.playbackOrder ) == -1) {
+     chakraSelection.playbackOrder.push(chakraNumber);
+  } else {
+    var index = chakraSelection.playbackOrder.indexOf(chakraNumber);
+    chakraSelection.playbackOrder.splice(index, 1);
+  }
+  console.log(chakraSelection.playbackOrder);
   for (var key in chakraSelection.chakra) {
     if (chakraSelection.chakra.hasOwnProperty(key)) {
       if (chakraNo == key) {
@@ -53,6 +65,7 @@ chakraSelection.chakra = {
   chakra6 : false,
   chakra7 : false
 }
+chakraSelection.playbackOrder = [];
 
 var stoneState = new Object ();
 stoneState.zone = "head";
