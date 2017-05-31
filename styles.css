@@ -3,7 +3,7 @@ html {
 background: #fc7232; /* Old browsers */
 background: -moz-linear-gradient( #fc7232 0%, #f2c05e 100%); /* FF3.6-15 */
 background: -webkit-linear-gradient(#fc7232 0%,#f2c05e 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(#fc7232 0%,#f2c05e 100%);, Safari7+ */
+background: linear-gradient(#fc7232 0%,#f2c05e 100%); /*Safari7+ */
 height:100%;
 }
 
