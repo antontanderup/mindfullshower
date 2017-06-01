@@ -22,13 +22,16 @@ var updateTime = function () {
 
 var playShower = function() {
   var audio = new Audio(rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[0] + '.wav');
-  audio.play();
+  var audioFreq = new Audio(rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[0] + '_frequency.wav');
+  audio.play(); audioFreq.play();
   for (i = 1; i < chakraSelection.playbackOrder.length; ++i) {
     var delay = i * 120000;
     var audioFile = rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[i] + '.wav';
+    var audioFreqFile = rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[i] + '_frequency.wav';
     setTimeout(function(audioFile){
       var audio = new Audio(audioFile);
-      audio.play();
+      var audioFreq = new Audio(audioFreqFile);
+      audio.play(); audioFreq.play();
     }, delay, audioFile);
   }
 
