@@ -24,26 +24,23 @@ var updateTime = function () {
 
 var playShower = function() {
   $(".shower-start-blur").show();
-  var intro =  new Audio(rootFolder + 'audio/intro.wav');
+  var intro =  new Audio(rootFolder + 'audio/intro.mp3');
   intro.play();
   setTimeout(function(){
-    var audio = new Audio(rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[0] + '.wav');
-    var audioFreq = new Audio(rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[0] + '_frequency.wav');
-    audio.play(); audioFreq.play();
+    var audio = new Audio(rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[0] + '.mp3');
+    audio.play();
   }, 60000);
   for (i = 1; i < chakraSelection.playbackOrder.length; ++i) {
     var delay = (i * 120000) + 60000;
-    var audioFile = rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[i] + '.wav';
-    var audioFreqFile = rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[i] + '_frequency.wav';
+    var audioFile = rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[i] + '.mp3';
     setTimeout(function(audioFile){
       var audio = new Audio(audioFile);
-      var audioFreq = new Audio(audioFreqFile);
-      audio.play(); audioFreq.play();
+      audio.play();
     }, delay, audioFile);
   }
   var outroDelay = (chakraSelection.playbackOrder.length * 120000) + 60000;
   setTimeout(function(){
-    var outro = new Audio(rootFolder + 'audio/outro.wav');
+    var outro = new Audio(rootFolder + 'audio/outro.mp3');
     outro.play();
   }, outroDelay);
 
