@@ -3,7 +3,7 @@ var rootFolder = document.location.pathname;
 $(".shower-start-blur").hide();
 
 var updateTimeline = function () {
-  chakraSelection.time = 1 + .32;
+  chakraSelection.time = 1 + .56;
   $("#time-line").empty();
   for (i = 0; i < chakraSelection.playbackOrder.length; ++i) {
 
