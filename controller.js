@@ -1,4 +1,4 @@
-var rootFolder = document.location.pathname;
+var rootFolder = "";
 
 $(".shower-start-blur").hide();
 
