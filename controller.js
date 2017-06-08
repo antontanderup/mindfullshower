@@ -22,28 +22,37 @@ var updateTime = function () {
       //<input id="time-line-range" name="time-line-range" type ="range" min="-2.5" max="3.0" step ="0.1"/>
 }
 
-var playShower = function() {
+var showerInit = function() {
   $(".shower-start-blur").show();
+  var timer = setInterval(function() {
+    if (stoneInput.pressed) {
+      playShower();
+      clearInterval(timer);
+    }
+  }, 1000); // call every 1000 milliseconds
+}
+
+var playShower = function() {
   var intro =  new Audio(rootFolder + 'audio/intro.mp3');
   intro.play();
   setTimeout(function(){
     var audio = new Audio(rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[0] + '.mp3');
-    audio.play();
+    audio.play(); stoneState.chakra = chakraSelection.playbackOrder[0];
   }, 60000);
   for (i = 1; i < chakraSelection.playbackOrder.length; ++i) {
     var delay = (i * 120000) + 60000;
     var audioFile = rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[i] + '.mp3';
-    setTimeout(function(audioFile){
+    setTimeout(function(audioFile, i){
       var audio = new Audio(audioFile);
+      stoneState.chakra = chakraSelection.playbackOrder[i];
       audio.play();
-    }, delay, audioFile);
+    }, delay, audioFile, i);
   }
   var outroDelay = (chakraSelection.playbackOrder.length * 120000) + 60000;
   setTimeout(function(){
     var outro = new Audio(rootFolder + 'audio/outro.mp3');
     outro.play();
   }, outroDelay);
-
 }
 
 
@@ -93,19 +102,40 @@ chakraSelection.chakra = {
 chakraSelection.playbackOrder = [];
 
 var stoneState = new Object ();
-stoneState.zone = "head";
-stoneState.vibration = true;
+stoneState.chakra = 0;
+stoneState.vibration = 0;
+
+var stoneInput = new Object ();
+stoneInput.pressed = false;
+
+var getStoneInput = function() { // Get input from stone
+  $.getJSON( "php/button.json", function( data ) {
+    $.each( data, function( key, val ) {
+      if (key == "button" && val) {
+        stoneInput.pressed = true;
+      } else {
+        stoneInput.pressed = false;
+      }
+    });
+  });
+}
 
 
-var saveStoneState = function (stoneObject) {
+var saveStoneState = function () {
   $.ajax
     ({
         type: "GET",
         dataType : 'json',
         async: false,
-        url: 'http://localhost/mindfullSelector/savejson.php',
-        data: { data: JSON.stringify(stoneObject) },
+        url: 'savejson.php',
+        data: { data: JSON.stringify(stoneState) },
         success: function () {alert("Thanks!"); },
         failure: function() {alert("Error!");}
     });
 }
+
+window.setInterval(function(){ // Update input from stone
+  getStoneInput();
+  saveStoneState();
+  console.log(stoneInput.pressed);
+}, 1000);
