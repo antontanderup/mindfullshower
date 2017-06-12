@@ -22,6 +22,8 @@ unsigned long previousMillis = 0;
 const long interval = 1000;
 int ledState = LOW; 
 
+bool breathe = false;
+
 void setup () {
   
   FastLED.addLeds<NEOPIXEL, LEDPin>(leds, NUM_LEDS);
@@ -64,15 +66,31 @@ void buttonPress(bool state) {
   }
 }
 
+void fadeBrightnessDown () {
+  for (int i=200; i >= 0; i--){
+    FastLED.setBrightness(i);
+    FastLED.show();
+    delay(5);
+  }
+}
+
+void fadeBrightnessUp () {
+    for (int i=0; i <= 200; i++){
+    FastLED.setBrightness(i);
+    FastLED.show();
+    delay(5);
+  }
+}
+
 void animateLED() {
   Serial.print("animateLED ");
   for (int i=0; i <= 12; i++){
     switch (chakraColor) {
-    case 1: 
+    case 1:
       leds[i] = CRGB( 255,0,0);
       Serial.println("case 1");
       break;
-    case 2:  
+    case 2: 
       leds[i] = CRGB( 255,106,0);
       Serial.println("case 2");
       break;
@@ -106,6 +124,24 @@ void animateLED() {
   FastLED.show();
 }
 
+void breatheLED () {
+
+  https://arduinoelectronics.wordpress.com/2015/05/12/non-blocking-breathing-led/
+  
+   for (int i=200; i >= 50; i--){
+      FastLED.setBrightness(i);
+      FastLED.show();
+    delay(5);
+  }
+  delay(10);
+  for (int i=50; i <= 200; i++){
+    FastLED.setBrightness(i);
+    FastLED.show();
+    delay(5);
+  }
+  delay(20);
+}
+
 void getJson () {
   Serial.println("getJson startet");
   ledState = LOW;
@@ -119,7 +155,14 @@ void getJson () {
       String payload = http.getString();   //Get the request response payload
       StaticJsonBuffer<200> jsonBuffer;
       JsonObject& root = jsonBuffer.parseObject(payload);
-      chakraColor = root["chakra"];
+      if (chakraColor != root["chakra"]) { 
+        breathe = false;
+        fadeBrightnessDown();
+        chakraColor = root["chakra"];
+        animateLED();
+        fadeBrightnessUp();
+        breathe = true;
+        }
       vibrationFrq = root["vibration"];
       Serial.println(chakraColor);
       Serial.print(vibrationFrq); 
@@ -131,11 +174,19 @@ void getJson () {
 
 void loop() {
 
+  // check if the pushbutton is pressed.
+  // if it is, the buttonState is HIGH:
+  if (buttonState == HIGH) {
+    buttonPress(true);
+    delay(10000);
+  } else {
+    buttonPress(false);
+  }
+
   unsigned long currentMillis = millis();
   if(currentMillis - previousMillis >= interval) {
     previousMillis = currentMillis;   
     getJson();
-    animateLED();
   }
   
   digitalWrite(LED_BUILTIN, ledState);
@@ -151,6 +202,10 @@ void loop() {
     delay(5000);
   } else {
     buttonPress(false);
+  }
+
+  if (breathe) {
+    breatheLED ();
   }
   
 }

@@ -35,9 +35,11 @@ var showerInit = function() {
 var playShower = function() {
   var intro =  new Audio(rootFolder + 'audio/intro.mp3');
   intro.play();
+  saveStoneState();
   setTimeout(function(){
     var audio = new Audio(rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[0] + '.mp3');
     audio.play(); stoneState.chakra = chakraSelection.playbackOrder[0];
+    saveStoneState();
   }, 60000);
   for (i = 1; i < chakraSelection.playbackOrder.length; ++i) {
     var delay = (i * 120000) + 60000;
@@ -46,12 +48,14 @@ var playShower = function() {
       var audio = new Audio(audioFile);
       stoneState.chakra = chakraSelection.playbackOrder[i];
       audio.play();
+      saveStoneState();
     }, delay, audioFile, i);
   }
   var outroDelay = (chakraSelection.playbackOrder.length * 120000) + 60000;
   setTimeout(function(){
     var outro = new Audio(rootFolder + 'audio/outro.mp3');
     outro.play();
+    saveStoneState();
   }, outroDelay);
 }
 
@@ -123,20 +127,20 @@ var getStoneInput = function() { // Get input from stone
 
 var saveStoneState = function () {
   console.log("savingState");
+  var ajaxString = JSON.stringify(stoneState);
+  console.log(ajaxString);
   $.ajax
     ({
         type: "GET",
         dataType : 'json',
         async: false,
-        url: 'savejson.php',
-        data: { data: JSON.stringify(stoneState) },
-        success: function () {alert("Thanks!"); },
-        failure: function() {alert("Error!");}
+        url: 'http://antontanderup.dk/projects/mindfullshower/savejson.php',
+        data: { data: ajaxString },
+        success: function() {console.log("Thanks!"); },
+        failure: function() {console.log("Error!");}
     });
 }
 
 window.setInterval(function(){ // Update input from stone
   getStoneInput();
-  saveStoneState();
-  console.log(stoneInput.pressed);
 }, 1000);

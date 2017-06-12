@@ -1,4 +1,3 @@
-// This file saves json to a file
 <?php
 
 $myFile = "server.json";
