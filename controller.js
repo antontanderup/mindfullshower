@@ -122,6 +122,7 @@ var getStoneInput = function() { // Get input from stone
 
 
 var saveStoneState = function () {
+  console.log("savingState");
   $.ajax
     ({
         type: "GET",

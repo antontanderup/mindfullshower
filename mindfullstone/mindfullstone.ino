@@ -1,6 +1,12 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
+#include <FastLED.h>
+
+#define NUM_LEDS 12
+#define LEDPin D5
+
+CRGB leds[NUM_LEDS];
 
 const char* ssid = "iPhone 5s";
 const char* password = "12345678";
@@ -17,7 +23,9 @@ const long interval = 1000;
 int ledState = LOW; 
 
 void setup () {
-
+  
+  FastLED.addLeds<NEOPIXEL, LEDPin>(leds, NUM_LEDS);
+  
   pinMode(buttonPin, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(vibratorPin, OUTPUT);
@@ -56,7 +64,51 @@ void buttonPress(bool state) {
   }
 }
 
+void animateLED() {
+  Serial.print("animateLED ");
+  for (int i=0; i <= 12; i++){
+    switch (chakraColor) {
+    case 1: 
+      leds[i] = CRGB( 255,0,0);
+      Serial.println("case 1");
+      break;
+    case 2:  
+      leds[i] = CRGB( 255,106,0);
+      Serial.println("case 2");
+      break;
+    case 3:  
+      leds[i] = CRGB( 168,255,0);
+      Serial.println("case 3");
+      Serial.println(i);
+      break;
+    case 4: 
+      leds[i] = CRGB( 0,255,51);
+      Serial.println("case 4");
+      break;
+    case 5:  
+      leds[i] = CRGB( 0,122,255);
+      Serial.println("case 5");
+      break;
+    case 6:  
+      leds[i] = CRGB( 34,0,255);
+      Serial.println("case 6");
+      break;
+    case 7:  
+      leds[i] = CRGB( 93,0,199);
+      Serial.println("case 7");
+      break;
+    default: 
+      leds[i] = CRGB( 255,255,255);
+      Serial.println("case default");
+      break;
+    }
+  } 
+  FastLED.show();
+}
+
 void getJson () {
+  Serial.println("getJson startet");
+  ledState = LOW;
   if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
     HTTPClient http;  //Declare an object of class HTTPClient 
     http.begin("http://antontanderup.dk/projects/mindfullshower/server.json");  //Specify request destination
@@ -70,28 +122,23 @@ void getJson () {
       chakraColor = root["chakra"];
       vibrationFrq = root["vibration"];
       Serial.println(chakraColor);
-      Serial.println(vibrationFrq);
+      Serial.print(vibrationFrq); 
     }
     http.end();   //Close connection
   }
+  ledState = HIGH;
 }
-
-
-
 
 void loop() {
 
   unsigned long currentMillis = millis();
   if(currentMillis - previousMillis >= interval) {
     previousMillis = currentMillis;   
-    if (ledState == LOW) {
-      ledState = HIGH;  // Note that this switches the LED *off*
-      getJson();  }
-    else
-      ledState = LOW;   // Note that this switches the LED *on*
-    digitalWrite(LED_BUILTIN, ledState);
+    getJson();
+    animateLED();
   }
   
+  digitalWrite(LED_BUILTIN, ledState);
   analogWrite(vibratorPin, vibrationFrq);
 
   // read the state of the pushbutton value:
