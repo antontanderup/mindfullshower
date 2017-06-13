@@ -2,6 +2,7 @@
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 #include <FastLED.h>
+#include <math.h>
 
 #define NUM_LEDS 12
 #define LEDPin D5
@@ -16,13 +17,18 @@ const int vibratorPin = D6;
 
 int buttonState = 0;
 int chakraColor = 0;
+int nextChakraColor = 0;
 int vibrationFrq = 0;
 
 unsigned long previousMillis = 0;
 const long interval = 1000;
 int ledState = LOW; 
 
+unsigned long previousMillisBreathe = 0;
+const long intervalBreathe = 6;
 bool breathe = false;
+int breatheI = 0;
+bool breatheUp = true;
 
 void setup () {
   
@@ -48,10 +54,10 @@ void setup () {
 void buttonPress(bool state) {
   String url = "";
   if (state) {
-      url = "http://antontanderup.dk/projects/mindfullshower/php/buttonpressed.php";
+      url = "http://loekkegaard.dk/speciale/mindfullshower/php/buttonpressed.php";
   }  
   else {
-      url = "http://antontanderup.dk/projects/mindfullshower/php/buttonunpressed.php";
+      url = "http://loekkegaard.dk/speciale/mindfullshower/php/buttonunpressed.php";
     }
   if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
     HTTPClient http;  //Declare an object of class HTTPClient
@@ -67,18 +73,9 @@ void buttonPress(bool state) {
 }
 
 void fadeBrightnessDown () {
-  for (int i=200; i >= 0; i--){
+  for (int i= breatheI; i >= 0; i--){
     FastLED.setBrightness(i);
     FastLED.show();
-    delay(5);
-  }
-}
-
-void fadeBrightnessUp () {
-    for (int i=0; i <= 200; i++){
-    FastLED.setBrightness(i);
-    FastLED.show();
-    delay(5);
   }
 }
 
@@ -121,25 +118,6 @@ void animateLED() {
       break;
     }
   } 
-  FastLED.show();
-}
-
-void breatheLED () {
-
-  https://arduinoelectronics.wordpress.com/2015/05/12/non-blocking-breathing-led/
-  
-   for (int i=200; i >= 50; i--){
-      FastLED.setBrightness(i);
-      FastLED.show();
-    delay(5);
-  }
-  delay(10);
-  for (int i=50; i <= 200; i++){
-    FastLED.setBrightness(i);
-    FastLED.show();
-    delay(5);
-  }
-  delay(20);
 }
 
 void getJson () {
@@ -147,7 +125,7 @@ void getJson () {
   ledState = LOW;
   if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
     HTTPClient http;  //Declare an object of class HTTPClient 
-    http.begin("http://antontanderup.dk/projects/mindfullshower/server.json");  //Specify request destination
+    http.begin("http://loekkegaard.dk/speciale/mindfullshower/server.json");  //Specify request destination
     int httpCode = http.GET();                                                  //Send the request
  
     if (httpCode > 0) { //Check the returning code
@@ -156,13 +134,8 @@ void getJson () {
       StaticJsonBuffer<200> jsonBuffer;
       JsonObject& root = jsonBuffer.parseObject(payload);
       if (chakraColor != root["chakra"]) { 
-        breathe = false;
-        fadeBrightnessDown();
-        chakraColor = root["chakra"];
-        animateLED();
-        fadeBrightnessUp();
-        breathe = true;
-        }
+          nextChakraColor = root["chakra"];
+      }
       vibrationFrq = root["vibration"];
       Serial.println(chakraColor);
       Serial.print(vibrationFrq); 
@@ -174,16 +147,38 @@ void getJson () {
 
 void loop() {
 
+  // read the state of the pushbutton value:
+  buttonState = digitalRead(buttonPin);
+  
   // check if the pushbutton is pressed.
   // if it is, the buttonState is HIGH:
   if (buttonState == HIGH) {
     buttonPress(true);
-    delay(10000);
+    animateLED();
+    delay(5000);
+    getJson();
   } else {
     buttonPress(false);
-  }
-
+  }  
+  
   unsigned long currentMillis = millis();
+  if(currentMillis - previousMillisBreathe >= intervalBreathe) {
+    previousMillisBreathe = currentMillis;
+    if (breatheUp) { breatheI = breatheI + 10; }
+    else { 
+      if (breatheI < 50) { breatheI = breatheI -5; }
+      else {breatheI = breatheI -7;} }
+    FastLED.setBrightness(breatheI);
+    FastLED.show();    
+    if (breatheI > 200) { breatheUp = false; }
+    else if (breatheI < 10) { 
+      if (nextChakraColor != chakraColor) {
+        chakraColor = nextChakraColor;
+        animateLED();
+      }
+      breatheUp = true; }
+  }
+  
   if(currentMillis - previousMillis >= interval) {
     previousMillis = currentMillis;   
     getJson();
@@ -192,20 +187,4 @@ void loop() {
   digitalWrite(LED_BUILTIN, ledState);
   analogWrite(vibratorPin, vibrationFrq);
 
-  // read the state of the pushbutton value:
-  buttonState = digitalRead(buttonPin);
-  
-  // check if the pushbutton is pressed.
-  // if it is, the buttonState is HIGH:
-  if (buttonState == HIGH) {
-    buttonPress(true);
-    delay(5000);
-  } else {
-    buttonPress(false);
-  }
-
-  if (breathe) {
-    breatheLED ();
-  }
-  
 }

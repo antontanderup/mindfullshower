@@ -55,6 +55,7 @@ var playShower = function() {
   setTimeout(function(){
     var outro = new Audio(rootFolder + 'audio/outro.mp3');
     outro.play();
+    stoneState.chakra = 0;
     saveStoneState();
   }, outroDelay);
 }
@@ -109,6 +110,7 @@ var stoneState = new Object ();
 stoneState.chakra = 0;
 stoneState.vibration = 0;
 
+
 var stoneInput = new Object ();
 stoneInput.pressed = false;
 
@@ -134,7 +136,7 @@ var saveStoneState = function () {
         type: "GET",
         dataType : 'json',
         async: false,
-        url: 'http://antontanderup.dk/projects/mindfullshower/savejson.php',
+        url: 'savejson.php',
         data: { data: ajaxString },
         success: function() {console.log("Thanks!"); },
         failure: function() {console.log("Error!");}
@@ -144,3 +146,5 @@ var saveStoneState = function () {
 window.setInterval(function(){ // Update input from stone
   getStoneInput();
 }, 1000);
+
+saveStoneState();
