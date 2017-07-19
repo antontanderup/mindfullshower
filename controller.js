@@ -33,17 +33,17 @@ var showerInit = function() {
 }
 
 var playShower = function() {
-  var intro =  new Audio(rootFolder + 'audio/intro.mp3');
+  var intro =  new Audio(rootFolder + audioPath + 'intro.mp3');
   intro.play();
   saveStoneState();
   setTimeout(function(){
-    var audio = new Audio(rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[0] + '.mp3');
+    var audio = new Audio(rootFolder + audioPath + 'chakra_' + chakraSelection.playbackOrder[0] + '.mp3');
     audio.play(); stoneState.chakra = chakraSelection.playbackOrder[0];
     saveStoneState();
   }, 60000);
   for (i = 1; i < chakraSelection.playbackOrder.length; ++i) {
     var delay = (i * 120000) + 60000;
-    var audioFile = rootFolder + 'audio/chakra_' + chakraSelection.playbackOrder[i] + '.mp3';
+    var audioFile = rootFolder + audioPath + 'chakra_' + chakraSelection.playbackOrder[i] + '.mp3';
     setTimeout(function(audioFile, i){
       var audio = new Audio(audioFile);
       stoneState.chakra = chakraSelection.playbackOrder[i];
@@ -53,14 +53,15 @@ var playShower = function() {
   }
   var outroDelay = (chakraSelection.playbackOrder.length * 120000) + 60000;
   setTimeout(function(){
-    var outro = new Audio(rootFolder + 'audio/outro.mp3');
+    var outro = new Audio(rootFolder + audioPath + 'outro.mp3');
     outro.play();
     stoneState.chakra = 0;
     saveStoneState();
   }, outroDelay);
+  setTimeout(function(){
+    window.location.reload(false);
+  }, outroDelay + 56000 );
 }
-
-
 
 var toggleChakra = function (chakraNo) {
   var chakraNumber = parseInt(chakraNo.substring(6,7));
@@ -110,6 +111,22 @@ var stoneState = new Object ();
 stoneState.chakra = 0;
 stoneState.vibration = 0;
 
+var voiceOver = true;
+var audioPath = "audio/";
+var setVoiceOver = function () {
+  if (voiceOver) {
+    voiceOver = false;
+    audioPath = "audio/audio_novoice/";
+    console.log("voice off");
+  } else {
+    voiceOver = true;
+    audioPath = "audio/";
+    console.log("voice on");
+  }
+}
+$('#voiceToggle').click(function(){
+  setVoiceOver();
+});
 
 var stoneInput = new Object ();
 stoneInput.pressed = false;
